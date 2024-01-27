@@ -40,18 +40,12 @@ export const PricingCard = ({
           <Loader />
         </div>
       )}
-      {isAuthenticated && !isLoading && (
-        <Button>Get Started</Button>
+      {isAuthenticated && !isLoading && <Button>Get Started</Button>}
+      {!isAuthenticated && !isLoading && (
+        <SignInButton mode="modal">
+          <Button>Log in</Button>
+        </SignInButton>
       )}
-      {
-        !isAuthenticated && !isLoading && (
-          <SignInButton mode="modal">
-            <Button>
-              Log in
-            </Button>
-          </SignInButton>
-        )
-      }
 
       <ul role="list" className="space-y-4 text-left mt-8">
         {options.split(", ").map((option) => (
