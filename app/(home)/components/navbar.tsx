@@ -6,9 +6,14 @@ import { ModeToggle } from "@/components/shared/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { useScrolled } from "@/hooks/use-scrolled";
 import { cn } from "@/lib/utils";
+import { SignInButton, UserButton } from "@clerk/clerk-react";
+import { useConvexAuth } from "convex/react";
+import Link from "next/link";
 
 export const Navbar = () => {
   const scrolled = useScrolled();
+
+  const { isAuthenticated, isLoading } = useConvexAuth();
 
   return (
     <div
@@ -19,10 +24,27 @@ export const Navbar = () => {
     >
       <Logo />
       <div className="flex items-center gap-x-2">
-        <Button size={"sm"} variant={"ghost"}>
-          Log In
-        </Button>
-        <Button size={"sm"}>Get Notion Free</Button>
+        {!isAuthenticated && !isLoading && (
+          <>
+            <SignInButton mode="modal">
+              <Button size={"sm"} variant={"ghost"}>
+                Log In
+              </Button>
+            </SignInButton>
+            <SignInButton mode="modal">
+              <Button size={"sm"}>Get Notion Free</Button>
+            </SignInButton>
+          </>
+        )}
+
+        {isAuthenticated && !isLoading && (
+          <>
+            <Button size={"sm"} variant={"ghost"} asChild>
+              <Link href={"/documents"}>Enter notion</Link>
+            </Button>
+            <UserButton afterSignOutUrl="/" />
+          </>
+        )}
         <ModeToggle />
       </div>
     </div>

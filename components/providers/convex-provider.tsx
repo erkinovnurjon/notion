@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ChildProps } from "@/types";
 import { ClerkProvider, useAuth } from "@clerk/clerk-react";
