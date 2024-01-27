@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import Link from "next/link";
+import { Loader } from "@/components/ui/loader";
 
 export const Navbar = () => {
   const scrolled = useScrolled();
@@ -24,6 +25,7 @@ export const Navbar = () => {
     >
       <Logo />
       <div className="flex items-center gap-x-2">
+        {isLoading && <Loader />}
         {!isAuthenticated && !isLoading && (
           <>
             <SignInButton mode="modal">
