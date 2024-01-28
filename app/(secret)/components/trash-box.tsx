@@ -6,11 +6,13 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 export const TrashBox = () => {
   const router = useRouter();
+
+  const [search, setSearch] = useState("");
 
   const documents = useQuery(api.document.getTrashDocuments);
   const remove = useMutation(api.document.remove);
@@ -22,6 +24,10 @@ export const TrashBox = () => {
       </div>
     );
   }
+
+  const filterdDocument = documents.filter((document) => {
+    return document.title.toLowerCase().includes(search.toLowerCase());
+  });
 
   const onRemove = (documentId: Id<"documents">) => {
     const promise = remove({ id: documentId });
@@ -36,14 +42,19 @@ export const TrashBox = () => {
     <div className=" text-sm">
       <div className="flex items-center gap-x-1 p-2">
         <Search className="w-4 h-4" />
-        <Input />
+        <Input
+          className="h-7 px-2 focus-visible:ring-transparent bg-secondary"
+          placeholder="Filter by page title..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </div>
       <div className="mt-2 px-1 pb-1">
         <p className="hidden last:block text-xs text-center text-muted-foreground">
           No documents in trash
         </p>
 
-        {documents.map((document) => (
+        {filterdDocument.map((document) => (
           <div
             key={document._id}
             className="text-sm w-full hover:bg-primary/5 flex items-center text-primary
