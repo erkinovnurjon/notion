@@ -24,6 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { TrashBox } from "./trash-box";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
@@ -144,7 +145,7 @@ export const Sidebar = () => {
               <Item label="Trash" icon={Trash} />
             </PopoverTrigger>
             <PopoverContent className="p-0 w-72" side={isMobile ? "bottom" : "right"}>
-              Please content for the popover here.
+              <TrashBox />
             </PopoverContent>
           </Popover>
         </div>
