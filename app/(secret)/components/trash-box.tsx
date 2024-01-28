@@ -3,15 +3,17 @@ import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 export const TrashBox = () => {
   const router = useRouter();
 
   const documents = useQuery(api.document.getTrashDocuments);
+  const remove = useMutation(api.document.remove);
 
   if (documents === undefined) {
     return (
@@ -21,7 +23,15 @@ export const TrashBox = () => {
     );
   }
 
-  const onRemove = (documentId : Id<"documents">) => {};
+  const onRemove = (documentId: Id<"documents">) => {
+    const promise = remove({ id: documentId });
+
+    toast.promise(promise, {
+      loading: "Removing Document...",
+      success: "Remove document!",
+      error: "Failed to remove document",
+    });
+  };
   return (
     <div className=" text-sm">
       <div className="flex items-center gap-x-1 p-2">
