@@ -30,9 +30,9 @@ import { toast } from "sonner";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
-  const createDocument = useMutation(api.document.createDocument);
   const router = useRouter();
-
+  const createDocument = useMutation(api.document.createDocument);
+  
   const sidebarRef = useRef<ElementRef<"div">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
   const isResizing = useRef(false);
