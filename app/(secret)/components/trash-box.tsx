@@ -1,6 +1,8 @@
+import ConfirmModal from "@/components/modals/confirm-modals";
 import { Input } from "@/components/ui/input";
 import { Loader } from "@/components/ui/loader";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -18,6 +20,8 @@ export const TrashBox = () => {
       </div>
     );
   }
+
+  const onRemove = (documentId : Id<"documents">) => {};
   return (
     <div className=" text-sm">
       <div className="flex items-center gap-x-1 p-2">
@@ -45,12 +49,14 @@ export const TrashBox = () => {
               >
                 <Undo className="w-4 h-4" />
               </div>
-              <div
-                className=" rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
-                role="button"
-              >
-                <Trash className="w-4 h-4" />
-              </div>
+              <ConfirmModal onConfirm={() => onRemove(document._id)}>
+                <div
+                  className=" rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+                  role="button"
+                >
+                  <Trash className="w-4 h-4" />
+                </div>
+              </ConfirmModal>
             </div>
           </div>
         ))}
