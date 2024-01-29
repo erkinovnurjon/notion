@@ -27,6 +27,7 @@ import {
 import { TrashBox } from "./trash-box";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Navbar } from "./navbar";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
@@ -191,7 +192,7 @@ export const Sidebar = () => {
         ref={navbarRef}
       >
         {!!params.documentId ? (
-          <Navbar />
+          <Navbar isCollapsed={isCollapsed} reset={reset} />
         ) : (
           <nav className={cn("bg-transparent px-3 py-2 w-full")}>
             {isCollapsed && (
