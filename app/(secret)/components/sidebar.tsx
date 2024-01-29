@@ -30,6 +30,7 @@ import { toast } from "sonner";
 import { Navbar } from "./navbar";
 import  TrashBox  from "./trash-box";
 import { useSearch } from "@/hooks/use-search";
+import { useSettings } from "@/hooks/use-settings";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
@@ -42,6 +43,7 @@ export const Sidebar = () => {
   const navbarRef = useRef<ElementRef<"div">>(null);
   const isResizing = useRef(false);
   const search = useSearch()
+  const settings = useSettings()
 
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const [isResetting, setIsResetting] = useState(false);
@@ -148,7 +150,7 @@ export const Sidebar = () => {
         <div>
           <UserBox />
           <Item label="Search" icon={Search} isSearch onClick={() => search.onOpen()} />
-          <Item label="Settings" icon={Settings} />
+          <Item label="Settings" icon={Settings} onClick={() => settings.onOpen()} />
           <Item label="New document" icon={Plus} onClick={onCreateDocument} />
         </div>
 
