@@ -2,7 +2,7 @@ import { Loader } from "@/components/ui/loader";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useQuery } from "convex/react";
-import { MenuIcon } from "lucide-react";
+import { Menu, MenuIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import React from "react";
 import { Title } from "./title";
@@ -49,6 +49,7 @@ export const Navbar = ({ isCollapsed, reset }: NavbarProps) => {
           <Title document={document} />
           <div className="flex items-center gap-x-2">
             <Publish document={document} />
+            <Menu document={document._id} />
           </div>
         </div>
       </nav>

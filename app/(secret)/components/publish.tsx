@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
@@ -7,7 +8,7 @@ import {
 import { api } from "@/convex/_generated/api";
 import { Doc } from "@/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
-import { Globe } from "lucide-react";
+import { Check, Copy, Globe } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -17,9 +18,11 @@ interface PublishProps {
 
 export const Publish = ({ document }: PublishProps) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [copied, setcopied] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   const updateFields = useMutation(api.document.updateFields);
+
+  const url = `${process.env.NEXT_PUBLIC_DOMAIN}/preview/${document._id}`;
 
   const onPublish = () => {
     setIsLoading(true);
@@ -48,11 +51,23 @@ export const Publish = ({ document }: PublishProps) => {
       error: "Failed to unpublish",
     });
   };
+
+  const onCopy = () => {
+    navigator.clipboard.writeText(url);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
   return (
     <Popover>
       <PopoverTrigger>
         <Button variant={"ghost"} size={"sm"}>
-          share
+          Share
+          {document.isPublished && (
+            <Globe className=" text-sky-500 w-4 h-4 ml-2" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end" alignOffset={8} forceMount>
@@ -80,6 +95,33 @@ export const Publish = ({ document }: PublishProps) => {
                 This not is live on web
               </p>
             </div>
+
+            <div className="flex items-center">
+              <Input
+                disabled
+                value={url}
+                className="flex-1 text-xs px-2 rounded-l-md h-8 bg-muted truncate"
+              />
+              <Button
+                className="h-8 rounded-l-none"
+                disabled={copied}
+                onClick={onCopy}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className=" h-4 w-4" />
+                )}
+              </Button>
+            </div>
+            <Button
+              className="w-full"
+              size={"sm"}
+              onClick={onUnPublish}
+              disabled={isLoading}
+            >
+              Unpublish
+            </Button>
           </div>
         )}
       </PopoverContent>
