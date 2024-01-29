@@ -29,6 +29,7 @@ import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Navbar } from "./navbar";
 import  TrashBox  from "./trash-box";
+import { useSearch } from "@/hooks/use-search";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
@@ -40,6 +41,7 @@ export const Sidebar = () => {
   const sidebarRef = useRef<ElementRef<"div">>(null);
   const navbarRef = useRef<ElementRef<"div">>(null);
   const isResizing = useRef(false);
+  const search = useSearch()
 
   const [isCollapsed, setIsCollapsed] = useState(isMobile);
   const [isResetting, setIsResetting] = useState(false);
@@ -145,7 +147,7 @@ export const Sidebar = () => {
 
         <div>
           <UserBox />
-          <Item label="Search" icon={Search} isSearch />
+          <Item label="Search" icon={Search} isSearch onClick={() => search.onOpen()} />
           <Item label="Settings" icon={Settings} />
           <Item label="New document" icon={Plus} onClick={onCreateDocument} />
         </div>
