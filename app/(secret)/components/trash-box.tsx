@@ -5,12 +5,13 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Search, Trash, Undo } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
 export const TrashBox = () => {
   const router = useRouter();
+  const params = useParams();
 
   const [search, setSearch] = useState("");
 
@@ -37,6 +38,10 @@ export const TrashBox = () => {
       success: "Remove document!",
       error: "Failed to remove document",
     });
+
+    if ((params.documentId = documentId)) {
+      router.push("/documents");
+    }
   };
   return (
     <div className=" text-sm">
@@ -60,6 +65,7 @@ export const TrashBox = () => {
             className="text-sm w-full hover:bg-primary/5 flex items-center text-primary
             justify-between"
             role="button"
+            onClick={() => router.push(`/documents/${document._id}`)}
           >
             <span className=" truncate pl-2">{document.title}</span>
 
