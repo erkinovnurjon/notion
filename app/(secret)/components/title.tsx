@@ -13,10 +13,10 @@ interface TitleProps {
 export const Title = ({ document }: TitleProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const updateFields = useMutation(api.document.updateFields);
+
   const [title, setTitle] = useState(document.title || "Untitled");
   const [isEditing, setIsEditing] = useState(false);
-
-  const updateFields = useMutation(api.document.updateFields);
 
   const enableInput = () => {
     setTitle(document.title);
@@ -26,9 +26,11 @@ export const Title = ({ document }: TitleProps) => {
       inputRef.current?.setSelectionRange(0, inputRef.current.value.length);
     }, 0);
   };
-  const disapleInput = () => {
+
+  const disableInput = () => {
     setIsEditing(false);
   };
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
     updateFields({
@@ -36,9 +38,10 @@ export const Title = ({ document }: TitleProps) => {
       title: event.target.value || "Untitled",
     });
   };
+
   const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      disapleInput();
+      disableInput();
     }
   };
 
@@ -49,7 +52,7 @@ export const Title = ({ document }: TitleProps) => {
         <Input
           ref={inputRef}
           onClick={enableInput}
-          onBlur={disapleInput}
+          onBlur={disableInput}
           onChange={onChange}
           onKeyDown={onKeydown}
           value={title}
@@ -57,17 +60,18 @@ export const Title = ({ document }: TitleProps) => {
         />
       ) : (
         <Button
-          className=" font-normal h-auto p-1"
+          className="font-normal h-auto p-1"
           variant={"ghost"}
+          size={"sm"}
           onClick={enableInput}
         >
-          <span className=" truncate">{document.title}</span>
+          <span className="truncate">{document.title}</span>
         </Button>
       )}
     </div>
   );
 };
 
-Title.Skeleton = function TitleSkleleton(){
-      return <Skeleton className="h-9 w-20 rounded-md" />
-}
+Title.Skeleton = function TitleSkeleton() {
+  return <Skeleton className="h-9 w-20 rounded-md" />;
+};

@@ -24,15 +24,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { TrashBox } from "./trash-box";
+
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Navbar } from "./navbar";
+import  TrashBox  from "./trash-box";
 
 export const Sidebar = () => {
   const isMobile = useMediaQuery("(max-width: 770px)");
   const router = useRouter();
   const params = useParams();
+
   const createDocument = useMutation(api.document.createDocument);
 
   const sidebarRef = useRef<ElementRef<"div">>(null);
@@ -109,10 +111,10 @@ export const Sidebar = () => {
   const onCreateDocument = () => {
     const promise = createDocument({
       title: "Untitled",
-    }).then((docId) => router.push(`documents/${docId}`));
+    }).then((docId) => router.push(`/documents/${docId}`));
 
     toast.promise(promise, {
-      loading: "Creating a new document...",
+      loading: "Createing a new document...",
       success: "Created a new document!",
       error: "Failed to create a new document",
     });
@@ -130,8 +132,6 @@ export const Sidebar = () => {
         )}
         ref={sidebarRef}
       >
-        {" "}
-        <UserBox />
         <div
           className={cn(
             "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition",
@@ -142,14 +142,17 @@ export const Sidebar = () => {
         >
           <ChevronsLeft className="h-6 w-6" />
         </div>
+
         <div>
+          <UserBox />
           <Item label="Search" icon={Search} />
           <Item label="Settings" icon={Settings} />
-          <Item label="New Document" icon={Plus} onClick={onCreateDocument} />
+          <Item label="New document" icon={Plus} onClick={onCreateDocument} />
         </div>
+
         <div className="mt-4">
           <DocumentList />
-          <Item label="Add a page" icon={Plus} onClick={onCreateDocument} />
+          <Item onClick={onCreateDocument} icon={Plus} label="Add a page" />
 
           <Popover>
             <PopoverTrigger className="w-full mt-4">
@@ -163,22 +166,24 @@ export const Sidebar = () => {
             </PopoverContent>
           </Popover>
         </div>
+
         <div
           className="absolute right-0 top-0 w-1 h-full cursor-ew-resize bg-primary/10 opacity-0 group-hover/sidebar:opacity-100 transition"
           onMouseDown={handleMouseDown}
         />
-        <div className=" absolute bottom-0 px-2 bg-white/50 dark:bg-black/50 py-4 w-full">
-          <div className="flex items-center justify-between">
-            <div className=" flex items-center gap-1 text-[13px]">
+
+        <div className="absolute bottom-0 px-2 bg-white/50 dark:bg-black/50 py-4 w-full">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-1 text-[13px]">
               <Rocket />
-              <p className=" opacity-70 font-bold">Free Plan</p>
+              <p className="opacity-70 font-bold">Free plan</p>
             </div>
-            <p className="text-[13px] opacity-70">{arr}/3</p>
+            <p className="text-[13px] opacity-70">{arr.length}/3</p>
           </div>
 
           <Progress
-            className="mt-2"
             value={arr.length >= 3 ? 100 : arr.length * 33.33}
+            className="mt-2"
           />
         </div>
       </div>

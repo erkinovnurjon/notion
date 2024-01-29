@@ -9,14 +9,15 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-export const TrashBox = () => {
+const TrashBox = () => {
   const router = useRouter();
   const params = useParams();
 
-  const [search, setSearch] = useState("");
-
   const documents = useQuery(api.document.getTrashDocuments);
   const remove = useMutation(api.document.remove);
+  const restore = useMutation(api.document.restore);
+
+  const [search, setSearch] = useState("");
 
   if (documents === undefined) {
     return (
@@ -26,7 +27,7 @@ export const TrashBox = () => {
     );
   }
 
-  const filterdDocument = documents.filter((document) => {
+  const filteredDocuments = documents.filter((document) => {
     return document.title.toLowerCase().includes(search.toLowerCase());
   });
 
@@ -34,17 +35,28 @@ export const TrashBox = () => {
     const promise = remove({ id: documentId });
 
     toast.promise(promise, {
-      loading: "Removing Document...",
-      success: "Remove document!",
+      loading: "Removing document...",
+      success: "Removed document!",
       error: "Failed to remove document",
     });
 
-    if ((params.documentId = documentId)) {
+    if (params.documentId === documentId) {
       router.push("/documents");
     }
   };
+
+  const onRestore = (documentId: Id<"documents">) => {
+    const promise = restore({ id: documentId });
+
+    toast.promise(promise, {
+      loading: "Restoring document...",
+      success: "Restored document!",
+      error: "Failed to restore document",
+    });
+  };
+
   return (
-    <div className=" text-sm">
+    <div className="text-sm">
       <div className="flex items-center gap-x-1 p-2">
         <Search className="w-4 h-4" />
         <Input
@@ -54,34 +66,34 @@ export const TrashBox = () => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+
       <div className="mt-2 px-1 pb-1">
-        <p className="hidden last:block text-xs text-center text-muted-foreground">
+        <p className="hidden last:block text-xs text-center text-muted-foreground pb-2">
           No documents in trash
         </p>
 
-        {filterdDocument.map((document) => (
+        {filteredDocuments.map((document) => (
           <div
             key={document._id}
-            className="text-sm w-full hover:bg-primary/5 flex items-center text-primary
-            justify-between"
+            className="text-sm rounded-sm w-full hover:bg-primary/5 flex items-center text-primary justify-between"
             role="button"
             onClick={() => router.push(`/documents/${document._id}`)}
           >
-            <span className=" truncate pl-2">{document.title}</span>
-
+            <span className="truncate pl-2">{document.title}</span>
             <div className="flex items-center">
               <div
-                className=" rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
+                className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                 role="button"
+                onClick={() => onRestore(document._id)}
               >
-                <Undo className="w-4 h-4" />
+                <Undo className="h-4 w-4 text-muted-foreground" />
               </div>
               <ConfirmModal onConfirm={() => onRemove(document._id)}>
                 <div
-                  className=" rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                   role="button"
+                  className="rounded-sm p-2 hover:bg-neutral-200 dark:hover:bg-neutral-600"
                 >
-                  <Trash className="w-4 h-4" />
+                  <Trash className="h-4 w-4 text-muted-foreground" />
                 </div>
               </ConfirmModal>
             </div>
@@ -91,3 +103,5 @@ export const TrashBox = () => {
     </div>
   );
 };
+
+export default TrashBox;

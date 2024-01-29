@@ -1,16 +1,16 @@
-import { Id } from '@/convex/_generated/dataModel'
-import React from 'react'
+"use client";
 
-interface DocumetIdPageProps{
-      params : {
-            documentId : Id<"documents">
-      }
+import { Id } from "@/convex/_generated/dataModel";
+import React from "react";
+
+interface DocumentIdPageProps {
+  params: {
+    documentId: Id<"documents">;
+  };
 }
 
-const DocumentIdPage = ({params} : DocumetIdPageProps) => {
-  return (
-    <div className=' mt-24'>{params.documentId}</div>
-  )
-}
+const DocumentIdage = ({ params }: DocumentIdPageProps) => {
+  return <div className="mt-24">{params.documentId}</div>;
+};
 
-export default DocumentIdPage
+export default DocumentIdage;
