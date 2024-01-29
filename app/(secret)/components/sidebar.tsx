@@ -145,7 +145,7 @@ export const Sidebar = () => {
 
         <div>
           <UserBox />
-          <Item label="Search" icon={Search} />
+          <Item label="Search" icon={Search} isSearch />
           <Item label="Settings" icon={Settings} />
           <Item label="New document" icon={Plus} onClick={onCreateDocument} />
         </div>

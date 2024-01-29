@@ -35,6 +35,7 @@ interface ItemProps {
   active?: boolean;
   documentIcon?: string;
   icon?: LucideIcon;
+  isSearch?: boolean;
 }
 
 export const Item = ({
@@ -43,6 +44,7 @@ export const Item = ({
   level,
   onExpand,
   expanded,
+  isSearch,
   onClick,
   active,
   documentIcon,
