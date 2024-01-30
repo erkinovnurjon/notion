@@ -3,13 +3,13 @@ import EmojiPicker, { Theme } from "emoji-picker-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useTheme } from "next-themes";
 
-interface IconProps {
+interface IconPickerProps {
   onChange: (icon: string) => void;
   children: React.ReactNode;
   asChild?: boolean;
 }
 
-const IconPicker = ({ children, onChange, asChild }: IconProps) => {
+const IconPicker = ({ children, onChange, asChild }: IconPickerProps) => {
   const { resolvedTheme } = useTheme();
   const currentTheme = (resolvedTheme || "light") as keyof typeof themeMap;
 
@@ -33,4 +33,5 @@ const IconPicker = ({ children, onChange, asChild }: IconProps) => {
     </Popover>
   );
 };
+
 export default IconPicker;

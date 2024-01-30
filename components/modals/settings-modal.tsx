@@ -17,6 +17,7 @@ import { Settings } from "lucide-react";
 
 const SettingsModal = () => {
   const settings = useSettings();
+
   const { isOpen, onClose, onToggle } = settings;
 
   useEffect(() => {
