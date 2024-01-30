@@ -1,10 +1,11 @@
 import { Doc } from "@/convex/_generated/dataModel";
-import React from "react";
+import React, { ElementRef, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { Smile, X } from "lucide-react";
+import { ImageIcon, Smile, X } from "lucide-react";
 import IconPicker from "./icon-picker";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import TextareaAutoSize from "react-textarea-autosize";
 
 interface ToolbarProps {
   document: Doc<"documents">;
@@ -13,6 +14,10 @@ interface ToolbarProps {
 
 export const Toolbar = ({ document, preview }: ToolbarProps) => {
   const updateFields = useMutation(api.document.updateFields);
+  const textareaRef = useRef<ElementRef<"textarea">>(null);
+
+  const [value, setValue] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
 
   const onIconChange = (icon: string) => {
     updateFields({
@@ -26,6 +31,15 @@ export const Toolbar = ({ document, preview }: ToolbarProps) => {
       id: document._id,
       icon: "",
     });
+  };
+
+  const disableInput = () => setIsEditing(false);
+
+  const onKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      disableInput();
+    }
   };
 
   return (
@@ -56,8 +70,11 @@ export const Toolbar = ({ document, preview }: ToolbarProps) => {
       <div className=" opacity-0 group-hover:opacity-100 flex items-center gap-x-1 py-4">
         {!document.icon && !preview && (
           <IconPicker asChild onChange={onIconChange}>
-            <Button size={"sm"} variant={"outline"}
-            className="text-xs text-muted-foreground flex gap-x-2">
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              className="text-xs text-muted-foreground flex gap-x-2"
+            >
               <Smile className="h-4 w-4" />
               <span>Add icon</span>
             </Button>
@@ -66,14 +83,30 @@ export const Toolbar = ({ document, preview }: ToolbarProps) => {
 
         {!document.coverImage && !preview && (
           <IconPicker asChild onChange={onIconChange}>
-            <Button size={"sm"} variant={"outline"}
-            className="text-xs text-muted-foreground flex gap-x-2">
-              <Smile className="h-4 w-4" />
-              <span>Add icon</span>
+            <Button
+              size={"sm"}
+              variant={"outline"}
+              className="text-xs text-muted-foreground flex gap-x-2"
+            >
+              <ImageIcon className="h-4 w-4" />
+              <span>Cover Image</span>
             </Button>
           </IconPicker>
         )}
       </div>
+      {!isEditing && !preview ? (
+        <TextareaAutoSize
+          ref={textareaRef}
+          onBlur={disableInput}
+          onKeyDown={onKeyDown}
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+          className="text-5xl bg-transparent font-bold break-words outline-none text-[#3F3F3F]
+          dark:text-[#CFCFCF] resize-none"
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
