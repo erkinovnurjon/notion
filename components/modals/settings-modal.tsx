@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,8 +17,19 @@ import { Settings } from "lucide-react";
 
 const SettingsModal = () => {
   const settings = useSettings();
+  const { isOpen, onClose, onToggle } = settings;
 
-  const { isOpen, onClose, onOpen } = settings;
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "j" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        onToggle();
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, [onToggle]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

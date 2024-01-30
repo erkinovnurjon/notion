@@ -150,7 +150,7 @@ export const Sidebar = () => {
         <div>
           <UserBox />
           <Item label="Search" icon={Search} isSearch onClick={() => search.onOpen()} />
-          <Item label="Settings" icon={Settings} onClick={() => settings.onOpen()} />
+          <Item label="Settings" icon={Settings} isSettings onClick={() => settings.onOpen()} />
           <Item label="New document" icon={Plus} onClick={onCreateDocument} />
         </div>
 
