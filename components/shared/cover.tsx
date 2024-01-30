@@ -19,7 +19,7 @@ export const Cover = ({ url, preview }: CoverProps) => {
         url && "bg-muted"
       )}
     >
-      {!!url && <Image src={url} alt="cover" className=" object-cover" />}
+      {!!url && <Image src={url} fill alt="cover" className=" object-cover" />}
 
       {url && !preview && (
         <div
