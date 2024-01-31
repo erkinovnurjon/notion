@@ -2,11 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, useUser } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { ArrowRight, Check } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
+
 
 interface PricingCardProps {
   title: string;
@@ -24,15 +28,29 @@ export const PricingCard = ({
   priceId,
 }: PricingCardProps) => {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const { user } = useUser();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async () => {
-    setIsSubmitting(true);
+    if (price === "Free") {
+      router.push("/documents");
+      return;
+    }
+    setIsSubmitting(false);
     try {
+      const { data } = await axios.post("/api/stripe/subscription", {
+        priceId,
+        email: user?.emailAddresses[0].emailAddress,
+        userId: user?.id,
+      });
+      console.log(data);
+      setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
       toast.error("Something went wrong");
+      console.log(error);
     }
   };
 
@@ -55,7 +73,18 @@ export const PricingCard = ({
           <Loader />
         </div>
       )}
-      {isAuthenticated && !isLoading && <Button>Get Started</Button>}
+      {isAuthenticated && !isLoading && (
+        <Button onClick={onSubmit} disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <Loader />
+              <span className="ml-2">Submitting</span>
+            </>
+          ) : (
+            "Get started"
+          )}
+        </Button>
+      )}
       {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
           <Button>Log in</Button>
