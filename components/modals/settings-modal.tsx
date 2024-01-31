@@ -33,9 +33,9 @@ const SettingsModal = () => {
   }, [onToggle]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader className="border-b pb-3">
+    <Dialog open={isOpen} onOpenChange={onClose} > 
+      <DialogContent className="text-muted-foreground">
+        <DialogHeader className="border-b pb-3 text-muted-foreground">
           <h2 className="text-lg font-medium">My settings</h2>
         </DialogHeader>
         <div className="flex items-center justify-between">
@@ -54,7 +54,7 @@ const SettingsModal = () => {
               Manage your subscription and billing information
             </span>
           </div>
-          <Button size={"sm"}>
+          <Button size={"sm"} className="text-muted-foreground">
             <Settings size={16} />
           </Button>
         </div>

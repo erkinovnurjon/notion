@@ -21,13 +21,13 @@ export const UserBox = () => {
       <DropdownMenuTrigger asChild>
         <div
           role="button"
-          className="flex items-center text-sm p-3 w-full hover:bg-primary/5"
+          className="flex items-center text-sm  p-3 w-full hover:bg-primary/5"
         >
           <div className="gap-x-2 flex items-center max-w-[150px]">
             <Avatar className="h-5 w-5">
               <AvatarImage src={user?.imageUrl} />
             </Avatar>
-            <span className="text-start font-medium line-clamp-1">
+            <span className="text-start text-muted-foreground font-medium line-clamp-1">
               {user?.firstName}&apos;s Notion
             </span>
           </div>

@@ -23,8 +23,8 @@ const Editor = ({ onChange, editable, initialContent }: EditorProps) => {
   const editor: BlockNoteEditor = useBlockNote({
     editable,
     initialContent: initialContent
-    //@ts-ignore
-      ? (JSON.parse(initialContent) as PartialBlock[])
+      ? //@ts-ignore
+        (JSON.parse(initialContent) as PartialBlock[])
       : undefined,
     onEditorContentChange: (editor) => {
       onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
