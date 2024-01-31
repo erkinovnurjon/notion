@@ -8,7 +8,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import dynamic from "next/dynamic";
 import React, { useMemo } from "react";
-import "@blocknote/react/style.css";
+
 
 
 interface DocumentIdPageProps {

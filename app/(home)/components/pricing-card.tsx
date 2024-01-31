@@ -5,13 +5,15 @@ import { Loader } from "@/components/ui/loader";
 import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
 import { ArrowRight, Check } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface PricingCardProps {
   title: string;
   subtitle: string;
   options: string;
   price: string;
+  priceId?: string;
 }
 
 export const PricingCard = ({
@@ -19,8 +21,21 @@ export const PricingCard = ({
   price,
   subtitle,
   title,
+  priceId,
 }: PricingCardProps) => {
   const { isAuthenticated, isLoading } = useConvexAuth();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const onSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+    } catch (error) {
+      setIsSubmitting(false);
+      toast.error("Something went wrong");
+    }
+  };
+
   return (
     <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-black dark:text-white">
       <h3 className="mb-4 text-2xl font-semibold">{title}</h3>

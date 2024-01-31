@@ -34,7 +34,7 @@
 
     --radius: 0.5rem;
   }
-  body {
+  /* body {
     font-family: sans-serif;
     -webkit-font-smoothing: auto;
     -moz-font-smoothing: auto;
@@ -45,8 +45,7 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
 
-    background-color: #000 !important;
-  }
+  } */
 
   /* Base theme */
   /* .bn-container[data-color-scheme] {
@@ -104,6 +103,7 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+    background-color: #000;
   }
 }
 
