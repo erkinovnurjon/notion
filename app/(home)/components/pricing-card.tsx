@@ -2,15 +2,14 @@
 
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/ui/loader";
-import { SignInButton, useUser } from "@clerk/clerk-react";
+import { SignInButton } from "@clerk/clerk-react";
 import { useConvexAuth } from "convex/react";
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
+import { useUser } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-
-
 
 interface PricingCardProps {
   title: string;
@@ -29,28 +28,28 @@ export const PricingCard = ({
 }: PricingCardProps) => {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { user } = useUser();
+  const router = useRouter();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter();
 
   const onSubmit = async () => {
     if (price === "Free") {
       router.push("/documents");
       return;
     }
-    setIsSubmitting(false);
+    setIsSubmitting(true);
+
     try {
       const { data } = await axios.post("/api/stripe/subscription", {
         priceId,
         email: user?.emailAddresses[0].emailAddress,
         userId: user?.id,
       });
-      console.log(data);
+      window.open(data, "_self");
       setIsSubmitting(false);
     } catch (error) {
       setIsSubmitting(false);
-      toast.error("Something went wrong");
-      console.log(error);
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -68,11 +67,13 @@ export const PricingCard = ({
         </span>
         <span className="text-gray-500 dark:text-gray-400">/month</span>
       </div>
+
       {isLoading && (
-        <div className=" w-full flex justify-center items-center">
+        <div className="w-full flex justify-center items-center">
           <Loader />
         </div>
       )}
+
       {isAuthenticated && !isLoading && (
         <Button onClick={onSubmit} disabled={isSubmitting}>
           {isSubmitting ? (
@@ -81,13 +82,14 @@ export const PricingCard = ({
               <span className="ml-2">Submitting</span>
             </>
           ) : (
-            "Get started"
+            "Get Started"
           )}
         </Button>
       )}
+
       {!isAuthenticated && !isLoading && (
         <SignInButton mode="modal">
-          <Button>Log in</Button>
+          <Button>Log In</Button>
         </SignInButton>
       )}
 
